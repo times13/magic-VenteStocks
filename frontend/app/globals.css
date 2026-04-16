@@ -1,26 +1,29 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+    /* Palette Gondor Chic */
+    --color-parchment: #F5EBDC;
+    --color-ochre: #8B6F47;
+    --color-ochre-dark: #6B5637;
+    --color-ochre-light: #D4B896;
+    --color-sienna: #A0522D;
+    --color-gold: #D4AF37;
+    --color-gold-dark: #B8941F;
+    --color-earth-100: #EDE0CC;
+    --color-earth-300: #C8A47C;
+    --color-earth-500: #8B6F47;
+    --color-earth-700: #5D4037;
+    --color-earth-900: #3E2723;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    /* Polices */
+    --font-display: var(--font-cinzel), serif;
+    --font-body: var(--font-cormorant), serif;
+    --font-decor: var(--font-uncial), serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--color-parchment);
+    color: var(--color-earth-900);
+    font-family: var(--font-body);
+    font-size: 1.05rem;
 }

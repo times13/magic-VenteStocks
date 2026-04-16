@@ -1,33 +1,41 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, Uncial_Antiqua } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const cinzel = Cinzel({
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700"],
+    variable: "--font-cinzel",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const cormorant = Cormorant_Garamond({
+    subsets: ["latin"],
+    weight: ["300", "400", "500", "600", "700"],
+    variable: "--font-cormorant",
+});
+
+const uncial = Uncial_Antiqua({
+    subsets: ["latin"],
+    weight: ["400"],
+    variable: "--font-uncial",
 });
 
 export const metadata: Metadata = {
-  title: "Magic Vente Stock",
-  description: "Application de gestion des ventes et du stock",
+    title: "Gondor Chic — Élégance Intemporelle",
+    description: "Plateforme e-commerce Gondor Chic",
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
+                                       children,
+                                   }: Readonly<{
+    children: React.ReactNode;
 }>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
-  );
+    return (
+        <html
+            lang="fr"
+            className={`${cinzel.variable} ${cormorant.variable} ${uncial.variable}`}
+        >
+        <body className="antialiased min-h-screen flex flex-col">{children}</body>
+        </html>
+    );
 }
