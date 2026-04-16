@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function HomePage() {
     const [pseudo, setPseudo] = useState("");
@@ -17,6 +18,13 @@ export default function HomePage() {
             <div className="w-full max-w-md rounded-lg bg-white px-10 py-12 shadow-md">
                 {/* En-tête marque */}
                 <div className="mb-10 text-center">
+                    <Image
+                        src="/logo.png"
+                        alt="Gondor Chic"
+                        width={80}
+                        height={80}
+                        className="mx-auto mb-4"
+                    />
                     <h1 className="flex items-center justify-center gap-3 font-[family-name:var(--font-display)] text-4xl font-medium tracking-wider text-ochre">
                         <span>Gondor</span>
                         <span className="text-gold text-2xl">◆</span>
