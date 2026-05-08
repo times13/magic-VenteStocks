@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [pseudo, setPseudo] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: appel API d'authentification
+    // TODO: appel API d'authentification (simulation locale pour la démo)
     console.log("Connexion avec:", { pseudo, motDePasse });
+    router.push("/mypage");
   };
 
   return (
