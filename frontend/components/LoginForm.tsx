@@ -2,17 +2,33 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { connexion, ApiError } from "@/lib/api";
 
 export default function LoginForm() {
   const router = useRouter();
   const [pseudo, setPseudo] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
+  const [erreur, setErreur] = useState("");
+  const [envoiEnCours, setEnvoiEnCours] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: appel API d'authentification (simulation locale pour la démo)
-    console.log("Connexion avec:", { pseudo, motDePasse });
-    router.push("/mypage");
+    setErreur("");
+    setEnvoiEnCours(true);
+    try {
+      const client = await connexion(pseudo, motDePasse);
+      // Le client identifie est conserve pour personnaliser la page d'accueil.
+      sessionStorage.setItem("client", JSON.stringify(client));
+      router.push("/mypage");
+    } catch (e: unknown) {
+      setErreur(
+        e instanceof ApiError
+          ? e.message
+          : "Impossible de contacter le serveur Gondor Chic."
+      );
+    } finally {
+      setEnvoiEnCours(false);
+    }
   };
 
   return (
@@ -45,15 +61,24 @@ export default function LoginForm() {
         />
       </div>
 
+      {erreur && (
+        <p
+          role="alert"
+          className="rounded-md border border-ochre/50 bg-earth-100 px-4 py-3 text-center text-sm text-earth-900"
+        >
+          {erreur}
+        </p>
+      )}
+
       <div className="flex justify-center pt-4">
         <button
           type="submit"
-          className="rounded-full bg-ochre px-10 py-2.5 text-sm text-white transition-colors hover:bg-ochre-dark focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
+          disabled={envoiEnCours}
+          className="rounded-full bg-ochre px-10 py-2.5 text-sm text-white transition-colors hover:bg-ochre-dark focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          S&apos;identifier
+          {envoiEnCours ? "Connexion…" : "S'identifier"}
         </button>
       </div>
     </form>
   );
 }
-
