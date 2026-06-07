@@ -43,24 +43,26 @@ public class DataInitializer {
 
     /** Les trois produits du jeu de donnees metier (un seul est « du jour »). */
     private void seedProduits(ProduitRepository produitRepository) {
-        creerOuMajProduit(produitRepository, "Reliques d'anneaux", 35.00, 4, false, null);
-        creerOuMajProduit(produitRepository, "Épées Anduril", 12.00, 6, true,
+        creerProduitSiAbsent(produitRepository, "Reliques d'anneaux", 35.00, 4, false, null);
+        creerProduitSiAbsent(produitRepository, "Épées Anduril", 12.00, 6, true,
                 "https://i00.eu/img/602/1024x1024/5bed9kz7/116451.webp");
-        creerOuMajProduit(produitRepository, "Cartes de la terre du milieu", 10.00, 9, false, null);
+        creerProduitSiAbsent(produitRepository, "Cartes de la terre du milieu", 10.00, 9, false, null);
     }
 
-    private void creerOuMajProduit(ProduitRepository produitRepository, String libelle,
-                                   double prix, int stock, boolean estDuJour, String image) {
-        Produit produit = produitRepository.findByLibelle(libelle)
-                .orElseGet(Produit::new);
+    private void creerProduitSiAbsent(ProduitRepository produitRepository, String libelle,
+                                      double prix, int stock, boolean estDuJour, String image) {
+        // On ne touche jamais a un produit existant : son stock, son prix et son
+        // statut « du jour » evoluent a l'execution et ne doivent pas etre ecrases
+        // a chaque demarrage. On cree uniquement le produit s'il est absent.
+        if (produitRepository.findByLibelle(libelle).isPresent()) {
+            return;
+        }
+        Produit produit = new Produit();
         produit.setLibelle(libelle);
         produit.setPrix(prix);
         produit.setStock(stock);
         produit.setEstDuJour(estDuJour);
-        // On ne remplace l'image existante que si une nouvelle est fournie.
-        if (image != null) {
-            produit.setImage(image);
-        }
+        produit.setImage(image);
         produitRepository.save(produit);
     }
 }
