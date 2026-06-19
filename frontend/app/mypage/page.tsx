@@ -57,7 +57,7 @@ export default function MyPage() {
 
   const handleAjoutPanier = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!produit) return;
+    if (!produit || !client) return;
 
     if (quantite < 1) {
       setConfirmation("Veuillez saisir une quantité valide.");
@@ -67,7 +67,7 @@ export default function MyPage() {
     setEnvoiEnCours(true);
     setConfirmation("");
     try {
-      const reponse = await ajouterAuPanier(produit.id, quantite);
+      const reponse = await ajouterAuPanier(client.id, produit.id, quantite);
       // On reflete le stock restant renvoye par le backend.
       setProduit({ ...produit, stock: reponse.stockRestant });
       setQuantite(1);

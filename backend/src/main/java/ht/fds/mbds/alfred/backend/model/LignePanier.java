@@ -22,6 +22,10 @@ public class LignePanier {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "client_id", nullable = false)
+    private UserEntity client;
+
+    @ManyToOne(optional = false)
     @JoinColumn(name = "produit_id", nullable = false)
     private Produit produit;
 
@@ -32,7 +36,8 @@ public class LignePanier {
     public LignePanier() {
     }
 
-    public LignePanier(Produit produit, int quantite) {
+    public LignePanier(UserEntity client, Produit produit, int quantite) {
+        this.client = client;
         this.produit = produit;
         this.quantite = quantite;
         this.ajouteLe = Instant.now();
@@ -40,6 +45,14 @@ public class LignePanier {
 
     public Long getId() {
         return id;
+    }
+
+    public UserEntity getClient() {
+        return client;
+    }
+
+    public void setClient(UserEntity client) {
+        this.client = client;
     }
 
     public Produit getProduit() {

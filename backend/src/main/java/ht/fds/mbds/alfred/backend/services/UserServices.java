@@ -1,6 +1,7 @@
 package ht.fds.mbds.alfred.backend.services;
 
 import ht.fds.mbds.alfred.backend.exception.IdentifiantsInvalidesException;
+import ht.fds.mbds.alfred.backend.exception.RessourceIntrouvableException;
 import ht.fds.mbds.alfred.backend.model.UserEntity;
 import ht.fds.mbds.alfred.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,16 @@ public class UserServices {
         }
 
         return client;
+    }
+
+    /**
+     * Recupere un client par son identifiant.
+     *
+     * @throws RessourceIntrouvableException si aucun client ne correspond
+     */
+    public UserEntity getParId(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RessourceIntrouvableException(
+                        "Client introuvable (id=" + id + ")."));
     }
 }

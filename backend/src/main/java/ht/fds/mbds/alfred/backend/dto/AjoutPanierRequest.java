@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
  * Corps de la requete d'ajout au panier.
  */
 public record AjoutPanierRequest(
+        @NotNull(message = "L'identifiant du client est obligatoire.")
+        Long clientId,
+
         @NotNull(message = "L'identifiant du produit est obligatoire.")
         Long produitId,
 

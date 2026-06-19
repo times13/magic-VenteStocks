@@ -5,6 +5,7 @@ import ht.fds.mbds.alfred.backend.dto.PanierResponse;
 import ht.fds.mbds.alfred.backend.exception.StockInsuffisantException;
 import ht.fds.mbds.alfred.backend.model.LignePanier;
 import ht.fds.mbds.alfred.backend.model.Produit;
+import ht.fds.mbds.alfred.backend.model.UserEntity;
 import ht.fds.mbds.alfred.backend.repository.LignePanierRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class PanierService {
 
     private final ProduitService produitService;
+    private final UserServices userServices;
     private final LignePanierRepository lignePanierRepository;
 
     public PanierService(ProduitService produitService,
+                         UserServices userServices,
                          LignePanierRepository lignePanierRepository) {
         this.produitService = produitService;
+        this.userServices = userServices;
         this.lignePanierRepository = lignePanierRepository;
     }
 
@@ -27,6 +31,7 @@ public class PanierService {
      */
     @Transactional
     public PanierResponse ajouter(AjoutPanierRequest requete) {
+        UserEntity client = userServices.getParId(requete.clientId());
         Produit produit = produitService.getParId(requete.produitId());
 
         if (requete.quantite() > produit.getStock()) {
@@ -36,7 +41,7 @@ public class PanierService {
         }
 
         produit.setStock(produit.getStock() - requete.quantite());
-        lignePanierRepository.save(new LignePanier(produit, requete.quantite()));
+        lignePanierRepository.save(new LignePanier(client, produit, requete.quantite()));
 
         return new PanierResponse(
                 requete.quantite() + " × « " + produit.getLibelle()

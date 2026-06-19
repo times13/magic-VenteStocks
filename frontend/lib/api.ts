@@ -65,13 +65,14 @@ export async function getProduitDuJour(): Promise<Produit> {
 }
 
 export async function ajouterAuPanier(
+  clientId: number,
   produitId: number,
   quantite: number
 ): Promise<PanierResponse> {
   const res = await fetch(`${API_BASE}/api/panier`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ produitId, quantite }),
+    body: JSON.stringify({ clientId, produitId, quantite }),
   });
   if (!res.ok) await lireErreur(res);
   return res.json();
